@@ -23,8 +23,13 @@
         <h1 class="site-title">Smart Routine &amp; Product Advisor</h1>
       </header>
 
-      <!-- Category Filter -->
+      <!-- Product Search + Category Filter -->
       <div class="search-section">
+        <input
+          id="productSearch"
+          type="search"
+          placeholder="Search products by name, brand, or keyword…"
+        />
         <select id="categoryFilter">
           <option value="" disabled selected>Choose a Category</option>
           <option value="cleanser">Cleansers</option>
@@ -55,20 +60,30 @@
       <section class="chatbox">
         <h2>Let's Build Your Routine</h2>
         <div id="chatWindow" class="chat-window"></div>
+        <!-- debug panel removed for production UI -->
+
+        <!-- web search toggle removed -->
 
         <form id="chatForm" class="chat-form">
-          <label for="userInput" class="visually-hidden">Message</label>
           <input
             id="userInput"
             name="userInput"
             type="text"
+            aria-label="Chat message"
             placeholder="Ask me about products or routines…"
             autocomplete="off"
             required
           />
-          <button type="submit" id="sendBtn">
-            <i class="fa-solid fa-paper-plane"></i>
-            <span class="visually-hidden">Send</span>
+          <button
+            type="submit"
+            id="sendBtn"
+            aria-label="Send message"
+            title="Send"
+          >
+            <!-- Send icon (white plane) -->
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M8 6 L18 12 L8 18 Z" fill="#fff" />
+            </svg>
           </button>
         </form>
       </section>
@@ -85,8 +100,6 @@
       </footer>
     </div>
 
-    <!-- secrets.js can be removed when using Cloudflare Workers for API requests -->
-    <script src="secrets.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
