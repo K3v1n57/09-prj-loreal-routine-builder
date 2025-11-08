@@ -56,8 +56,14 @@ function displayProducts(products) {
           <div class="product-info">
             <h3>${p.name}</h3>
             <p>${p.brand}</p>
-            <button class="desc-btn" aria-label="Toggle description">Details</button>
-            <div class="product-desc hidden">${p.description}</div>
+            <button class="desc-btn" aria-label="Toggle description" aria-expanded="false" aria-controls="desc-${
+              p.id
+            }">Details</button>
+            <div id="desc-${
+              p.id
+            }" class="product-desc hidden" aria-hidden="true">${
+        p.description
+      }</div>
           </div>
         </div>`;
     })
@@ -85,12 +91,40 @@ function addProductListeners() {
       }
     });
 
-    // Show/hide description
+    // Show/hide description (only one open at a time)
     const descBtn = card.querySelector(".desc-btn");
     descBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       e.stopPropagation();
-      const desc = card.querySelector(".product-desc");
-      desc.classList.toggle("hidden");
+      const btn = e.currentTarget;
+      const cardEl = btn.closest(".product-card");
+      if (!cardEl) return;
+      const desc = cardEl.querySelector(".product-desc");
+      if (!desc) return;
+      const isOpen = !desc.classList.contains("hidden");
+
+      // Close any other open descriptions within the products container only
+      productsContainer.querySelectorAll(".product-desc").forEach((d) => {
+        if (d !== desc && !d.classList.contains("hidden")) {
+          d.classList.add("hidden");
+          d.setAttribute("aria-hidden", "true");
+          const otherBtn = d
+            .closest(".product-card")
+            ?.querySelector(".desc-btn");
+          if (otherBtn) otherBtn.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      // Toggle this one
+      if (isOpen) {
+        desc.classList.add("hidden");
+        desc.setAttribute("aria-hidden", "true");
+        btn.setAttribute("aria-expanded", "false");
+      } else {
+        desc.classList.remove("hidden");
+        desc.setAttribute("aria-hidden", "false");
+        btn.setAttribute("aria-expanded", "true");
+      }
     });
   });
 }
